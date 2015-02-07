@@ -2,18 +2,14 @@ class BrainStatement
   constructor: () ->
 
   apply: () ->
-
+  deapply: () ->
 class Program extends BrainStatement
   constructor: (@defs, @codes) ->
 
   push_def: (def) ->
-    if @defs?
-      @defs = []
     @defs.push def
 
   push_code: (code) ->
-    if @codes?
-      @codes = []
     @codes.push code
 
   apply: () ->
@@ -29,6 +25,15 @@ class Program extends BrainStatement
       for code in @codes
         ret.codes.push code.apply()
     return ret
+
+  deapply: (num) ->
+    console.log @codes
+    brainish = ''
+    for def in @defs
+      brainish = brainish+def.deapply(num)+'\n'
+    for code in @codes
+      brainish = brainish+code.deapply(num)+'\n'
+    return brainish
 
 class Def extends BrainStatement
   constructor: (@type, @inputs, @outpus, @bash) ->
@@ -50,17 +55,16 @@ class Def extends BrainStatement
 
     return ret
 
+  deapply: () ->
+
+
 class Code extends BrainStatement
   constructor: (@id, @type, @inputs, @subs) ->
 
   push_input: (input) ->
-    if @inputs?
-      @inputs = []
     @inputs.push input
 
   push_sub: (sub) ->
-    if @subs?
-      @subs = []
     @subs.push sub
 
   apply: () ->
@@ -79,6 +83,20 @@ class Code extends BrainStatement
         ret.subs.push sub.apply()
     return ret
 
+  deapply: (num) ->
+    input = @inputs.join(',')
+    indent = ''
+    for [0...num]
+      indent = indent+'  '
+    num = num+1
+    if JSON.stringify(@subs)=='[]'
+      decodeStr = indent+@id+':'+@type+'('+input+')'
+    else
+      subs = ''
+      for sub in @subs
+        subs = subs+sub.deapply(num)+'\n'
+      decodeStr = indent+@id+':'+@type+'('+input+')'+'{\n'+subs+'}'
+    return decodeStr
 module.exports = {
   Program: Program
   Def: Def

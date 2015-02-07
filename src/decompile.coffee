@@ -2,14 +2,19 @@
 stdlib = require './corelib/stdlib'
 
 visit = (node) ->
-  deCode = new Code node.id, node.illusion
+  inputs = []
+  subs = []
+  
   for inputKey in Object.keys(node.input)
-    deCode.push_input node.input[inputKey].toString()
+    inputs.push node.input[inputKey].toString()
 
-  for subKey in Object.keys(node.sub)
-    for sub in node.sub[subKey]
-      deCode.push_sub visit(sub)
+  if node.sub != null && node.sub != undefined
+    console.log node.sub.body
+    for subKey in Object.keys(node.sub)
+      for sub in node.sub[subKey]
+        subs.push visit(sub)
 
+  deCode = new Code node.id, node.illusion, inputs, subs
   return deCode
 
 decompile = (program) ->
@@ -21,5 +26,11 @@ decompile = (program) ->
   for node in janish
     deCode = visit(node)
     deProgram.push_code deCode
+  num = 0
+  console.log deProgram.deapply(num)
 
+
+      
+      
+    
 module.exports = decompile
