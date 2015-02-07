@@ -30,4 +30,19 @@ module.exports = {
     }
     "bash": "for _var(iterator) in _input(list); do\n    _sub(body)done;"
   }
+
+
+
+  "GOOGLE_SEARCH_URL": {
+    "input": ["keyword"]
+    "sub": null
+    "output": ["url"]
+    "bash": "_var(replaced)=\"_input(keyword)\"\n_var(replaced)=${_var(replaced)// /+}\n_var(url)=\"https://www.google.com/search?q=\"$_var(replaced)"
+  }
+  "GOOGLE_SEARCH": {
+    "input": ["url"]
+    "sub": null
+    "output": ["result"]
+    "bash": "_var(result)=$(wget -U firefox -O - _input(url) 2>/dev/null | grep -o '<a href=\"/url?q=[^\"'\"'\"']*&amp;sa' | sed -e 's/^<a href=[\"'\"'\"']\\\/url?q=//' -e 's/&amp;sa$//')"
+  }
 }
