@@ -52,6 +52,12 @@ module.exports = {
     "output": []
     "bash": "_var(file)=\"_input(file)\"\nif [ -d \"_input(file)\" ]; then\n   _sub(body)fi"
   }
+  "DISK_USAGE": {
+    "input": []
+    "sub": null
+    "output": []
+    "bash": "df -h | awk '$NF==\"/\"{printf \"Disk Usage: %d/%dGB (%s)\", $3,$2,$5}'; echo"
+  }
   "GREP_LINE": {
     "input": ["matcher", "path"]
     "sub": null
