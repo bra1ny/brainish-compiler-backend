@@ -7,6 +7,8 @@ visitCode = (node) ->
   subs = []
 
   for inputKey in Object.keys(node.input)
+    if (node.input[inputKey].match(/^#.*/)!=null)
+      node.input[inputKey] = node.input[inputKey].substring(1)
     inputs.push node.input[inputKey].toString()
 
   if node.sub != null && node.sub != undefined

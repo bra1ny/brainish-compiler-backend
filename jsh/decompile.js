@@ -14,6 +14,9 @@
     _ref1 = Object.keys(node.input);
     for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
       inputKey = _ref1[_i];
+      if (node.input[inputKey].match(/^#.*/) !== null) {
+        node.input[inputKey] = node.input[inputKey].substring(1);
+      }
       inputs.push(node.input[inputKey].toString());
     }
     if (node.sub !== null && node.sub !== void 0) {
@@ -81,6 +84,7 @@
       deCode = visitCode(node);
       deProgram.push_code(deCode);
     }
+    console.log(JSON.stringify(deProgram.apply()));
     return compile(deProgram);
   };
 
