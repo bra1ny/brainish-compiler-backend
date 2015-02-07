@@ -84,7 +84,6 @@
       deCode = visitCode(node);
       deProgram.push_code(deCode);
     }
-    console.log(JSON.stringify(deProgram.apply()));
     return compile(deProgram);
   };
 
