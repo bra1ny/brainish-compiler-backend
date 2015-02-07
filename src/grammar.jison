@@ -4,6 +4,7 @@
 %{
 
 var ast = require('./ast');
+var anonymousBase = Math.floor((Math.random() * 1000000000) + 1);
 
 %}
 
@@ -55,6 +56,10 @@ code
     { $$ = new ast.Code($1, $3, $5, $8); }
   | ID COLON TYPE LPARENTHESIS paramList RPARENTHESIS SEMICOLON
     { $$ = new ast.Code($1, $3, $5, []); }
+  | COLON TYPE LPARENTHESIS paramList RPARENTHESIS LBRACE codeList RBRACE
+    { anonymousBase++; $$ = new ast.Code("t" + anonymousBase, $2, $4, $7); }
+  | COLON TYPE LPARENTHESIS paramList RPARENTHESIS SEMICOLON
+    { anonymousBase++; $$ = new ast.Code("t" + anonymousBase, $2, $4, []); }
   ;
 
 paramList
