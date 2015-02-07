@@ -16,7 +16,27 @@ class Program extends BrainStatement
         ret.codes.push code.apply()
     return ret
 
-class Use extends BrainStatement
+class Def extends BrainStatement
+  constructor: (@type, @inputs, @outpus, @bash) ->
+
+  apply: () ->
+    ret = {
+      "type": @type
+      "inputs": []
+      "outputs": []
+      "bash": @bash
+    }
+    if @inputs?
+      for input in @inputs
+        ret.inputs.push input.toString()
+
+    if @outputs?
+      for output in @outputs
+        ret.outputs.push output.toString()
+
+    return ret
+
+class Code extends BrainStatement
   constructor: (@id, @type, @inputs, @subs) ->
 
   apply: () ->
@@ -36,6 +56,7 @@ class Use extends BrainStatement
     return ret
 
 module.exports = {
-  Use: Use
   Program: Program
+  Def: Def
+  Code: Code
 }
