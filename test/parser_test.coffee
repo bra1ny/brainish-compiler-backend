@@ -4,6 +4,10 @@ compile = require '../jsh/compile'
 exports.testParser = (test) ->
   brainish =
     """
+    PRINT (content) : output {
+      "bash"
+    }
+
     ls : LS ("-al Document/GitHub/");
     for_each : FOR_EACH (ls.fileList) {
       echo : ECHO (for_each.iterator);

@@ -40,12 +40,19 @@ esc \\\\
 %%
 
 program
-  : codeList EOF
-    { $$ = new ast.Program([], $1); return $$; }
+  : defineList codeList EOF
+    { $$ = new ast.Program($1, $2); return $$; }
   ;
 
 codeList
   : code codeList
+    { $$ = [$1].concat($2); }
+  |
+    { $$ = []; }
+  ;
+
+defineList
+  : define defineList
     { $$ = [$1].concat($2); }
   |
     { $$ = []; }
@@ -60,6 +67,13 @@ code
     { anonymousBase++; $$ = new ast.Code("t" + anonymousBase, $2, $4, $7); }
   | COLON TYPE LPARENTHESIS paramList RPARENTHESIS SEMICOLON
     { anonymousBase++; $$ = new ast.Code("t" + anonymousBase, $2, $4, []); }
+  ;
+
+define
+  : TYPE LPARENTHESIS defParamList RPARENTHESIS COLON defParamList LBRACE STRING RBRACE
+    { $$ = new ast.Def($1, $3, $6, $8); }
+  | TYPE LPARENTHESIS defParamList RPARENTHESIS LBRACE STRING RBRACE
+    { $$ = new ast.Def($1, $3, [], $6); }
   ;
 
 paramList
@@ -81,4 +95,23 @@ param
     { $$ = $1 }
   | ID DOT ID
     { $$ = (function(para1, para2){return para1+'.'+para2;})($1, $3); }
+  ;
+
+defParamList
+  : defParam defParamTail
+    { $$ = [$1].concat($2); }
+  |
+    { $$ = []; }
+  ;
+
+defParamTail
+  : COMMA defParam defParamTail
+    { $$ = [$2].concat($3); }
+  |
+    { $$ = []; }
+  ;
+
+defParam
+  : ID
+    { $$ = $1; }
   ;

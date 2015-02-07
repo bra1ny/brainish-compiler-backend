@@ -2,7 +2,9 @@ class BrainStatement
   constructor: () ->
 
   apply: () ->
+
   deapply: () ->
+    
 class Program extends BrainStatement
   constructor: (@defs, @codes) ->
 
@@ -36,7 +38,7 @@ class Program extends BrainStatement
     return brainish
 
 class Def extends BrainStatement
-  constructor: (@type, @inputs, @outpus, @bash) ->
+  constructor: (@type, @inputs, @outputs, @bash) ->
 
   apply: () ->
     ret = {
@@ -97,6 +99,7 @@ class Code extends BrainStatement
         subs = subs+sub.deapply(num)+'\n'
       decodeStr = indent+@id+':'+@type+'('+input+')'+'{\n'+subs+'}'
     return decodeStr
+
 module.exports = {
   Program: Program
   Def: Def
