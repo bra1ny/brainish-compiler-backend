@@ -1,7 +1,5 @@
 (function() {
-  var compile, compileBash, compileJSON, compile_jsh, decompile, fs, grammar;
-
-  fs = require('fs');
+  var compile, compileBash, compileJSON, compile_jsh, decompile, grammar;
 
   grammar = require('../jsh/grammar');
 
@@ -11,29 +9,16 @@
 
   decompile = require("./decompile");
 
-  compileJSON = function(path, argv) {
-    return fs.readFile(path, "utf8", (function(_this) {
-      return function(err, data) {
-        if (err) {
-          throw err;
-        }
-        return console.log(JSON.stringify(compile(grammar.parse(data)), null, 2));
-      };
-    })(this));
+  compileJSON = function(brainish) {
+    return JSON.stringify(compile(grammar.parse(brainish)), null, 2);
   };
 
-  compileBash = function(path, argv) {
-    return fs.readFile(path, "utf8", (function(_this) {
-      return function(err, data) {
-        if (err) {
-          throw err;
-        }
-        return console.log(compile_jsh(compile(grammar.parse(data))));
-      };
-    })(this));
+  compileBash = function(brainish) {
+    return compile_jsh(compile(grammar.parse(brainish)));
   };
 
   module.exports = {
+    "parse": grammar.parse,
     "compile": compile,
     "decompile": decompile,
     "compileJSON": compileJSON,

@@ -1,7 +1,9 @@
 (function() {
-  var Banner, OptParse, Options, Switches, compiler, parserOptions;
+  var Banner, OptParse, Options, Switches, compiler, fs, parserOptions;
 
   compiler = require('./jsh');
+
+  fs = require('fs');
 
   OptParse = require('optparse');
 
@@ -43,9 +45,23 @@
     var Parser;
     parserOptions();
     if (Options.toJSON) {
-      return compiler.compileJSON(Options.scriptPath, Options.argv);
+      return fs.readFile(Options.scriptPath, "utf8", (function(_this) {
+        return function(err, data) {
+          if (err) {
+            throw err;
+          }
+          return console.log(compiler.compileJSON(data));
+        };
+      })(this));
     } else if (Options.scriptPath) {
-      return compiler.compileBash(Options.scriptPath, Options.argv);
+      return fs.readFile(Options.scriptPath, "utf8", (function(_this) {
+        return function(err, data) {
+          if (err) {
+            throw err;
+          }
+          return console.log(compiler.compileBash(data));
+        };
+      })(this));
     } else {
       Parser = new OptParse.OptionParser(Switches);
       Parser.banner = Banner;

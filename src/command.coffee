@@ -1,4 +1,5 @@
 compiler = require './jsh'
+fs = require 'fs'
 OptParse = require 'optparse'
 
 Switches = [
@@ -38,9 +39,13 @@ parserOptions = () ->
 exports.run = () ->
   parserOptions()
   if Options.toJSON
-    compiler.compileJSON Options.scriptPath, Options.argv
+    fs.readFile Options.scriptPath, "utf8", (err, data) =>
+      throw err if err
+      console.log compiler.compileJSON data
   else if Options.scriptPath
-    compiler.compileBash Options.scriptPath, Options.argv
+    fs.readFile Options.scriptPath, "utf8", (err, data) =>
+      throw err if err
+      console.log compiler.compileBash data
   else
     Parser = new OptParse.OptionParser Switches
     Parser.banner = Banner
