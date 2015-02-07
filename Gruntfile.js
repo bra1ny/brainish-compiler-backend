@@ -4,6 +4,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: ['jsh/', 'jsh_test'],
+    jison: {
+      target: {
+        files: {
+          'jsh/grammar.js': 'src/grammar.jison'
+        }
+      }
+    },
     coffee: {
       compile: {
         expand: true,
@@ -26,9 +33,10 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-jison');
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
-  grunt.registerTask('default', ['clean', 'coffee']);
-  grunt.registerTask('test', ['clean', 'coffee', 'nodeunit']);
+  grunt.registerTask('default', ['clean', 'jison', 'coffee']);
+  grunt.registerTask('test', ['clean', 'jison', 'coffee', 'nodeunit']);
 }

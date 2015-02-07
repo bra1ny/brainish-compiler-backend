@@ -1,0 +1,7 @@
+%start program
+
+%%
+
+program
+  : EOF
+  ;
