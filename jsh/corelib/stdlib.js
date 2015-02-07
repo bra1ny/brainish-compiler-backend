@@ -40,7 +40,7 @@
     "GOOGLE_SEARCH": {
       "input": ["url"],
       "sub": null,
-      "output": [],
+      "output": ["result"],
       "bash": "_var(result)=$(wget -U firefox -O - _input(url) 2>/dev/null | grep -o '<a href=\"/url?q=[^\"'\"'\"']*&amp;sa' | sed -e 's/^<a href=[\"'\"'\"']\\\/url?q=//' -e 's/&amp;sa$//')"
     }
   };
