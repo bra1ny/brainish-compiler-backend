@@ -2,14 +2,14 @@ module.exports = {
   "ECHO": {
     "input": ["content"]
     "sub": null
-    "output": ["output"]
-    "bash": "_var(content)=$(echo _input(output))"
+    "output": []
+    "bash": "echo _input(content)"
   }
   "PRINTF": {
     "input": ["content"]
     "sub": "null"
-    "output": ["output"]
-    "bash": "_var(content)=$(printf _input(output))"
+    "output": []
+    "bash": "printf _input(content)"
   }
   "LS": {
     "input": ["path"]
