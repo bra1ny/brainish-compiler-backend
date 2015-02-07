@@ -1,6 +1,6 @@
 module.exports = {
   "ECHO": {
-    "input": ["in"]
+    "input": ["content"]
     "sub": null
     "output": ["string"]
     "bash": "_var(in)=$(echo _input(a))"

@@ -34,6 +34,6 @@ exports.testProgram = (test) ->
   ]
   _program = new Program [_GOOGLE], [_ls, _for]
   compile = _program.apply()
-  test.equal 0, compile.defs.length
+  test.equal 1, compile.defs.length
   test.equal 2, compile.codes.length
   test.done()
