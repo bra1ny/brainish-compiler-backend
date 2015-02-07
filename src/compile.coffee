@@ -9,8 +9,8 @@ visit = (node, defs) ->
   types = []
 
   type = null
-  type = defs[node.type] if defs[node.type]?
   type = stdlib[node.type] if stdlib[node.type]?
+  type = defs[node.type] if defs[node.type]?
   for i in [0..node.inputs.length-1]
     code.input[type.input[i]] = node.inputs[i]
     if node.inputs[i].indexOf(".") > 0
