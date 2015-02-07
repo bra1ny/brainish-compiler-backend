@@ -1,9 +1,22 @@
-class Expression
+class BrainStatement
   constructor: () ->
 
   apply: () ->
 
-class Use extends Expression
+class Program extends BrainStatement
+  constructor: (@defs, @codes) ->
+
+  apply: () ->
+    ret = {
+      "defs": []
+      "codes": []
+    }
+    if @codes?
+      for code in @codes
+        ret.codes.push code.apply()
+    return ret
+
+class Use extends BrainStatement
   constructor: (@id, @type, @inputs, @subs) ->
 
   apply: () ->
@@ -24,4 +37,5 @@ class Use extends Expression
 
 module.exports = {
   Use: Use
+  Program: Program
 }
