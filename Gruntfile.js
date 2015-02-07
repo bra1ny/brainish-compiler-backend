@@ -11,7 +11,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    coffee: {
+    coffeeJsh: {
       compile: {
         expand: true,
         cwd: 'src',
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         dest: 'jsh/',
         ext: '.js'
       },
-      compile: {
+      compileTest: {
         expand: true,
         cwd: 'test',
         src: ['**/*.coffee'],
