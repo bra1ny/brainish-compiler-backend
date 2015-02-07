@@ -28,6 +28,6 @@ module.exports = {
     "sub": {
       "body": "iterator"
     }
-    "bash": "for _var(iterator) in $_input(list); do\n    _sub(body)done;"
+    "bash": "for _var(iterator) in _input(list); do\n    _sub(body)done;"
   }
 }

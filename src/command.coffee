@@ -1,8 +1,9 @@
-compileFile = require('./jsh').compileFile
+compiler = require './jsh'
 OptParse = require 'optparse'
 
 Switches = [
   ["-h", "--help", "Display this help information"]
+  ["-j", "--json", "Conmpile to JSON"]
 ]
 
 Banner =
@@ -12,6 +13,7 @@ Banner =
   """
 
 Options = {
+  toJSON: false
   scriptPath: null
   argv: []
 }
@@ -21,8 +23,11 @@ parserOptions = () ->
   Parser.banner = Banner
 
   Parser.on "help", () =>
-    clc.log Parser.toString()
+    console.log Parser.toString()
     process.exit 0
+
+  Parser.on "json", () =>
+    Options.toJSON = true
 
   Parser.on 0, (val) =>
     Options.scriptPath = val
@@ -32,8 +37,10 @@ parserOptions = () ->
 
 exports.run = () ->
   parserOptions()
-  if Options.scriptPath
-    compileFile Options.scriptPath, Options.argv
+  if Options.toJSON
+    compiler.compileJSON Options.scriptPath, Options.argv
+  else if Options.scriptPath
+    compiler.compileBash Options.scriptPath, Options.argv
   else
     Parser = new OptParse.OptionParser Switches
     Parser.banner = Banner

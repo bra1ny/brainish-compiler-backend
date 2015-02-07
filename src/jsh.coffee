@@ -4,7 +4,12 @@ compile = require "./compile"
 compile_jsh = require "./compile_jsh"
 decompile = require "./decompile"
 
-compileFile = (path, argv) ->
+compileJSON = (path, argv) ->
+  fs.readFile path, "utf8", (err, data) =>
+    throw err if err
+    console.log JSON.stringify(compile(grammar.parse(data)), null, 2)
+
+compileBash = (path, argv) ->
   fs.readFile path, "utf8", (err, data) =>
     throw err if err
     console.log compile_jsh(compile(grammar.parse(data)))
@@ -12,5 +17,6 @@ compileFile = (path, argv) ->
 module.exports = {
   "compile": compile
   "decompile": decompile
-  "compileFile": compileFile
+  "compileJSON": compileJSON
+  "compileBash": compileBash
 }
