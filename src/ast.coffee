@@ -6,6 +6,16 @@ class BrainStatement
 class Program extends BrainStatement
   constructor: (@defs, @codes) ->
 
+  push_def: (def) ->
+    if @defs?
+      @defs = []
+    @defs.push def
+
+  push_code: (code) ->
+    if @codes?
+      @codes = []
+    @codes.push code
+
   apply: () ->
     ret = {
       "defs": []
@@ -42,6 +52,16 @@ class Def extends BrainStatement
 
 class Code extends BrainStatement
   constructor: (@id, @type, @inputs, @subs) ->
+
+  push_input: (input) ->
+    if @inputs?
+      @inputs = []
+    @inputs.push input
+
+  push_sub: (sub) ->
+    if @subs?
+      @subs = []
+    @subs.push sub
 
   apply: () ->
     ret = {
