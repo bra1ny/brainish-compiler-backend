@@ -1,7 +1,9 @@
 (function() {
-  var Code, Def, Program, decompile, stdlib, visitCode, visitDef, _ref;
+  var Code, Def, Program, compile, decompile, simple2full, stdlib, visitCode, visitDef, _ref;
 
   _ref = require('../jsh/ast'), Program = _ref.Program, Def = _ref.Def, Code = _ref.Code;
+
+  compile = require('./compile');
 
   stdlib = require('./corelib/stdlib');
 
@@ -68,9 +70,23 @@
       deCode = visitCode(node);
       deProgram.push_code(deCode);
     }
-    return console.log(deProgram.deapply(num));
+    return deProgram.deapply(num);
   };
 
-  module.exports = decompile;
+  simple2full = function(janish) {
+    var deCode, deProgram, node, _i, _len;
+    deProgram = new Program([], []);
+    for (_i = 0, _len = janish.length; _i < _len; _i++) {
+      node = janish[_i];
+      deCode = visitCode(node);
+      deProgram.push_code(deCode);
+    }
+    return compile(deProgram);
+  };
+
+  module.exports = {
+    decompile: decompile,
+    simple2full: simple2full
+  };
 
 }).call(this);

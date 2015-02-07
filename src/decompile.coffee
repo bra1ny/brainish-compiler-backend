@@ -1,10 +1,11 @@
 {Program, Def, Code} = require '../jsh/ast'
+compile = require './compile'
 stdlib = require './corelib/stdlib'
 
 visitCode = (node) ->
   inputs = []
   subs = []
-  
+
   for inputKey in Object.keys(node.input)
     inputs.push node.input[inputKey].toString()
 
@@ -41,5 +42,16 @@ decompile = (program) ->
     deCode = visitCode(node)
     deProgram.push_code deCode
 
-  console.log deProgram.deapply(num)   
-module.exports = decompile
+  return deProgram.deapply(num)
+
+simple2full = (janish) ->
+  deProgram = new Program [], []
+  for node in janish
+    deCode = visitCode(node)
+    deProgram.push_code deCode
+  return compile(deProgram)
+
+module.exports = {
+  decompile
+  simple2full
+}
