@@ -54,7 +54,7 @@ RegularExpressionLiteral {RegularExpressionBody}\/{RegularExpressionFlags}
 ";"                       return 'SEMICOLON'
 [a-z][a-zA-Z_0-9]*        return 'ID'
 [A-Z][A-Z_0-9]+           return 'TYPE'
-{StringLiteral}           parser.restricted = false; return "STRING";
+{StringLiteral}           parser.restricted = false; yytext = yytext.substr(1,yyleng-2); return "STRING";
 <<EOF>>                   return 'EOF'
 
 

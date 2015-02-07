@@ -1,5 +1,5 @@
 ls : LS (".");
 for_each : FOR_EACH (ls.fileList) {
   : PRINTF ("There is a file: ");
-  : PRINTF (for_each.iterator);
+  : ECHO (for_each.iterator);
 }

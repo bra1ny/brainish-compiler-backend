@@ -3,13 +3,13 @@ module.exports = {
     "input": ["content"]
     "sub": null
     "output": []
-    "bash": "echo _input(content)"
+    "bash": "echo \"_input(content)\""
   }
   "PRINTF": {
     "input": ["content"]
     "sub": "null"
     "output": []
-    "bash": "printf _input(content)"
+    "bash": "printf \"_input(content)\""
   }
   "LS": {
     "input": ["path"]
