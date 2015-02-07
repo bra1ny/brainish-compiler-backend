@@ -58,7 +58,6 @@ class Def extends BrainStatement
     for i in [0...@inputs.length]
       if (@inputs[i].match(/^#.*/)!=null)
         @inputs[i] = @inputs[i].substring(1,)
-        console.log @inputs[i]
       else 
         @inputs[i] = '\"'+@inputs[i]+'\"'
       
