@@ -11,6 +11,10 @@ class Program extends BrainStatement
       "defs": []
       "codes": []
     }
+    # if @defs?
+    #   for def in @defs
+    #     ret.defs.push def.apply()
+
     if @codes?
       for code in @codes
         ret.codes.push code.apply()

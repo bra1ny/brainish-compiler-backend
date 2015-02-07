@@ -1,12 +1,13 @@
 stdlib = require './corelib/stdlib'
 
-visit = (node) ->
+visit = (node, defs) ->
   ret = {
     "id": node.id
     "illusion": node.type
     "input": {}
   }
   type = null
+  type = defs[node.type] if defs[node.type]?
   type = stdlib[node.type] if stdlib[node.type]?
   for i in [0..node.inputs.length]
     ret.input[type.input[i]] = node.inputs[i]
@@ -18,8 +19,18 @@ compile = (program) ->
     "janish": []
   }
 
+  defs = {}
+
+  for node in program.apply().defs
+    defs[node.type] = {
+      "input": node.inputs
+      "sub": null
+      "output": node.outputs
+      "bash": node.bash
+    }
+
   for node in program.apply().codes
-    obj = visit(node)
+    obj = visit(node, defs)
     ret.illusion[node.type] = obj.type
     ret.janish.push obj.ret
 

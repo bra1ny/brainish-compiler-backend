@@ -27,11 +27,12 @@ exports.testDef = (test) ->
   test.done()
 
 exports.testProgram = (test) ->
+  _GOOGLE = new Def "GOOGLE", ["keywords"], ["url"], "_var(url)=\"www.google.com\"\n"
   _ls = new Code "ls", "LS", ["."]
   _for = new Code "for", "FOR", ["ls.fileList"], [
     new Code "echo", "ECHO", ["for.itertor"]
   ]
-  _program = new Program "null", [_ls, _for]
+  _program = new Program [_GOOGLE], [_ls, _for]
   compile = _program.apply()
   test.equal 0, compile.defs.length
   test.equal 2, compile.codes.length
