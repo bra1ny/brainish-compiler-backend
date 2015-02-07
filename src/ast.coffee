@@ -3,6 +3,8 @@ class BrainStatement
 
   apply: () ->
   deapply: () ->
+    
+
 class Program extends BrainStatement
   constructor: (@defs, @codes) ->
 
@@ -33,6 +35,7 @@ class Program extends BrainStatement
     for code in @codes
       brainish = brainish+code.deapply(num)+'\n'
     return brainish
+
 
 class Def extends BrainStatement
   constructor: (@type, @inputs, @outputs, @bash) ->

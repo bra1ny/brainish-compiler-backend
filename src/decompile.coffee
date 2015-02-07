@@ -28,9 +28,6 @@ visitDef = (illusionKey, illusions) ->
   deDef = new Def illusionKey, inputs, outputs, illusions[illusionKey].bash
   return deDef
 
-
-  
-
 decompile = (program) ->
   deProgram = new Program [], []
   num = 0
