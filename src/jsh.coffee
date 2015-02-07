@@ -13,6 +13,7 @@ module.exports = {
   "parse": grammar.parse
   "compile": compile
   "decompile": decompile
+  "compileJSH": compile_jsh
   "compileJSON": compileJSON
   "compileBash": compileBash
 }
