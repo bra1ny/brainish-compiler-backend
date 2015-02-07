@@ -27,7 +27,6 @@ class Program extends BrainStatement
     return ret
 
   deapply: (num) ->
-    console.log @codes
     brainish = ''
     for def in @defs
       brainish = brainish+def.deapply(num)+'\n'
@@ -36,7 +35,7 @@ class Program extends BrainStatement
     return brainish
 
 class Def extends BrainStatement
-  constructor: (@type, @inputs, @outpus, @bash) ->
+  constructor: (@type, @inputs, @outputs, @bash) ->
 
   apply: () ->
     ret = {
@@ -55,7 +54,24 @@ class Def extends BrainStatement
 
     return ret
 
-  deapply: () ->
+  deapply: (num) ->
+    for i in [0...@inputs.length]
+      if (@inputs[i].match(/^#.*/)!=null)
+        @inputs[i] = @inputs[i].substring(1,)
+        console.log @inputs[i]
+      else 
+        @inputs[i] = '\"'+@inputs[i]+'\"'
+      
+    input = @inputs.join(',')
+    output = @outputs.join(',')
+    indent = ''
+
+    for [0...num]
+      indent = indent+'  '
+    num = num+1
+    decodeStr = @type+' ('+@inputs+') : '+@outputs+' {\n  \"'+@bash+'\"\n}'
+    return decodeStr
+
 
 
 class Code extends BrainStatement
@@ -84,18 +100,23 @@ class Code extends BrainStatement
     return ret
 
   deapply: (num) ->
+    for i in [0...@inputs.length]
+      if (@inputs[i].match(/^#.*/)!=null)
+        @inputs[i] = @inputs[i].substring(1,)
+      else 
+        @inputs[i] = '\"'+@inputs[i]+'\"'
     input = @inputs.join(',')
     indent = ''
     for [0...num]
       indent = indent+'  '
     num = num+1
     if JSON.stringify(@subs)=='[]'
-      decodeStr = indent+@id+':'+@type+'('+input+')'
+      decodeStr = indent+@id+' : '+@type+' ('+input+') '
     else
       subs = ''
       for sub in @subs
         subs = subs+sub.deapply(num)+'\n'
-      decodeStr = indent+@id+':'+@type+'('+input+')'+'{\n'+subs+'}'
+      decodeStr = indent+@id+' : '+@type+' ('+input+') '+'{\n'+subs+'}'
     return decodeStr
 module.exports = {
   Program: Program
