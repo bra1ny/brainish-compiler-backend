@@ -10,6 +10,9 @@ var ast = require('./ast');
 
 /* lexical grammar */
 %lex
+
+esc \\\\
+
 %%
 
 (\n|\s|\t)+               /* ignore */
@@ -23,8 +26,8 @@ var ast = require('./ast');
 ","                       return 'COMMA'
 ";"                       return 'SEMICOLON'
 [a-z][a-zA-Z_0-9]*        return 'ID'
-\"[0-9a-zA-Z]*\"          return 'STRING'
 [A-Z][A-Z_0-9]+           return 'TYPE'
+\"(?:{esc}[\"bfnrt/{esc}]|{esc}u[a-fA-F0-9]{4}|[^\"{esc}])*\"    { yytext = yytext.substr(1,yyleng-2); return 'STRING'; }
 <<EOF>>                   return 'EOF'
 
 

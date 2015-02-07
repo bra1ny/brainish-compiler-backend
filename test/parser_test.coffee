@@ -1,12 +1,16 @@
 grammar = require '../jsh/grammar'
+compile = require '../jsh/compile'
 
-brainish =
-  """
-  ls : LS ();
-  for_each : FOR_EACH (ls.fileList1, ls.fileList2) {
-
-  }
-  """
-
-program = grammar.parse(brainish)
-console.log JSON.stringify(program)
+exports.testParser = (test) ->
+  brainish =
+    """
+    ls : LS ("-al Document/GitHub/");
+    for_each : FOR_EACH (ls.fileList) {
+      echo : ECHO (for_each.iterator);
+    }
+    """
+  program = grammar.parse(brainish)
+  json = compile(program)
+  test.equal 3, Object.keys(json.illusion).length
+  test.equal 2, Object.keys(json.janish).length
+  test.done()
