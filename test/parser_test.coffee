@@ -5,7 +5,7 @@ exports.testParser = (test) ->
   brainish =
     """
     PRINT (content) : output {
-      "bash"
+      '_var(output)=$(echo _input(content))'
     }
 
     ls : LS ("-al Document/GitHub/");

@@ -12,9 +12,35 @@ var anonymousBase = Math.floor((Math.random() * 1000000000) + 1);
 /* lexical grammar */
 %lex
 
-esc \\\\
+LineContinuation \\(\r\n|\r|\n)
+OctalEscapeSequence (?:[1-7][0-7]{0,2}|[0-7]{2,3})
+HexEscapeSequence [x]{HexDigit}{2}
+UnicodeEscapeSequence [u]{HexDigit}{4}
+SingleEscapeCharacter [\'\"\\bfnrtv]
+NonEscapeCharacter [^\'\"\\bfnrtv0-9xu]
+CharacterEscapeSequence {SingleEscapeCharacter}|{NonEscapeCharacter}
+EscapeSequence {CharacterEscapeSequence}|{OctalEscapeSequence}|{HexEscapeSequence}|{UnicodeEscapeSequence}
+DoubleStringCharacter ([^\"\\\n\r]+)|(\\{EscapeSequence})|{LineContinuation}
+SingleStringCharacter ([^\'\\\n\r]+)|(\\{EscapeSequence})|{LineContinuation}
+StringLiteral (\"{DoubleStringCharacter}*\")|(\'{SingleStringCharacter}*\')
+RegularExpressionNonTerminator [^\n\r]
+RegularExpressionBackslashSequence \\{RegularExpressionNonTerminator}
+RegularExpressionClassChar [^\n\r\]\\]|{RegularExpressionBackslashSequence}
+RegularExpressionClass \[{RegularExpressionClassChar}*\]
+RegularExpressionFlags {IdentifierPart}*
+RegularExpressionFirstChar ([^\n\r\*\\\/\[])|{RegularExpressionBackslashSequence}|{RegularExpressionClass}
+RegularExpressionChar ([^\n\r\\\/\[])|{RegularExpressionBackslashSequence}|{RegularExpressionClass}
+RegularExpressionBody {RegularExpressionFirstChar}{RegularExpressionChar}*
+RegularExpressionLiteral {RegularExpressionBody}\/{RegularExpressionFlags}
 
+%x REGEXP
+%options flex
 %%
+
+<REGEXP>{RegularExpressionLiteral} %{
+                                        this.begin("INITIAL");
+                                        return "REGEXP_LITERAL";
+                                   %}
 
 (\n|\s|\t)+               /* ignore */
 
@@ -28,7 +54,7 @@ esc \\\\
 ";"                       return 'SEMICOLON'
 [a-z][a-zA-Z_0-9]*        return 'ID'
 [A-Z][A-Z_0-9]+           return 'TYPE'
-\"(?:{esc}[\"bfnrt/{esc}]|{esc}u[a-fA-F0-9]{4}|[^\"{esc}])*\"    { yytext = yytext.substr(1,yyleng-2); return 'STRING'; }
+{StringLiteral}           parser.restricted = false; return "STRING";
 <<EOF>>                   return 'EOF'
 
 
