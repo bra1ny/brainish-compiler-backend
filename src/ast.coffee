@@ -15,9 +15,9 @@ class Use extends Expression
     }
     if @inputs?
       for input in @inputs
-        ret.inputs.push input
+        ret.inputs.push input.toString()
 
-    if @sub?
+    if @subs?
       for sub in @subs
         ret.subs.push sub.apply()
     return ret
