@@ -1,0 +1,7 @@
+: CD ("example/log");
+ls : LS (".");
+for_each : FOR_EACH (ls.fileList) {
+  : PRINTF ("Searching ");
+  : ECHO (for_each.iterator);
+  grep : GREP_LINE ("21:00", for_each.iterator);
+}
