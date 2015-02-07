@@ -7,9 +7,18 @@ var ast = require('./ast');
 
 %}
 
+
 /* lexical grammar */
 %lex
+%x bash
+
 %%
+["]                      this.begin('bash')
+<bash>[^"]*               return 'BASH'
+<bash>["]                 this.popState()
+
+
+
 
 (\n|\s|\t)+               /* ignore */
 
@@ -35,9 +44,29 @@ var ast = require('./ast');
 %%
 
 program
-  : useList EOF
-    { return $$; }
+  : definitionList useList EOF
+    { $$ = (function(para1, para2){return para1 + para2;})($1, $2); return $$; }
   ;
+
+definitionList
+  : definition definitionList
+    { $$ = [$1].concat($2); }
+  |
+    { $$ = []; }
+  ;
+
+definition
+  : TYPE LPARENTHESIS IOList RPARENTHESIS COLON IOList LBRACE BASH RBRACE
+    { $$ = new ast.Definition($1, $3, $6, $8); }
+  ;
+IOList
+  : ID IOList
+    { $$ = [$1].concat($2); }
+  | COMMA ID IOList
+    { $$ = [$2].concat($3); }
+  |
+    { $$ = [] }
+  ; 
 
 useList
   : use useList
