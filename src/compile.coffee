@@ -11,8 +11,10 @@ visit = (node, defs) ->
   type = null
   type = defs[node.type] if defs[node.type]?
   type = stdlib[node.type] if stdlib[node.type]?
-  for i in [0..node.inputs.length]
+  for i in [0..node.inputs.length-1]
     code.input[type.input[i]] = node.inputs[i]
+    if node.inputs[i].indexOf(".") > 0
+      code.input[type.input[i]] = '#' + node.inputs[i]
 
   types.push { "name": node.type, "define": type }
 
