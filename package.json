@@ -1,0 +1,28 @@
+{
+  "name": "brainish-compiler-backend",
+  "version": "1.0.0",
+  "description": "Brainish is not Another Bash",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bra1ny/brainish-compiler-backend.git"
+  },
+  "keywords": [
+    "bash",
+    "brainy"
+  ],
+  "author": "bra1ny",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bra1ny/brainish-compiler-backend/issues"
+  },
+  "homepage": "https://github.com/bra1ny/brainish-compiler-backend",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-coffee": "^0.12.0",
+    "grunt-contrib-nodeunit": "^0.4.1"
+  },
+  "dependencies": {
+    "nodeunit": "^0.9.0"
+  }
+}
