@@ -1,5 +1,11 @@
 (function() {
   module.exports = {
+    "MOVE": {
+      "input": ["src_path", "dst_path"],
+      "sub": null,
+      "output": ["target"],
+      "bash": "mv _input(file) _input(path); _var(target)=_input(dst_path);"
+    },
     "ECHO": {
       "input": ["content"],
       "sub": null,
