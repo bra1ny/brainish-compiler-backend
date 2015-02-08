@@ -83,4 +83,22 @@ module.exports = {
     "output": ["result"]
     "bash": "_var(result)=$(wget -U firefox -O - _input(url) 2>/dev/null | grep -o '<a href=\"/url?q=[^\"'\"'\"']*&amp;sa' | sed -e 's/^<a href=[\"'\"'\"']\\\/url?q=//' -e 's/&amp;sa$//')"
   }
+  "COUNTER_INIT": {
+    "input" :[]
+    "bash": "counter=0"
+  }
+  "COUNTER_INCR": {
+    "input": []
+    "output": "counter"
+    "bash": "counter=$((counter+1))\n_var(counter)=counter"
+  }
+  "DOWNLOAD_CONTENT": {
+    "input": ["url"]
+    "output": ["content"]
+    "bash": "_var(content)=$(lynx -dump _input(url))"
+  }
+  "SAVE_TO_FILE": {
+    "input": ["content", "file"]
+    "bash": "echo _input(content) > _input(file).txt"
+  }
 }
