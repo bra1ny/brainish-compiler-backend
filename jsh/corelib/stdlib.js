@@ -4,7 +4,7 @@
       "input": ["src_path", "dst_path"],
       "sub": null,
       "output": ["target"],
-      "bash": "mv _input(file) _input(path); _var(target)=_input(dst_path);"
+      "bash": "mv _input(src_path) _input(dst_path); _var(target)=_input(dst_path);"
     },
     "ECHO": {
       "input": ["content"],
